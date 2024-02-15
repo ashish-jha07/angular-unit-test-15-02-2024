@@ -18,13 +18,18 @@ export class CoursesCardListComponent implements OnInit {
   courseEdited = new EventEmitter();
 
   constructor(private dialog: MatDialog) {
-
+    // console.log("courses", this.courses)
   }
 
   ngOnInit() {
 
   }
 
+  ngOnChanges(changes: any): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    // console.log(changes, "changes")
+  }
   editCourse(course: Course) {
 
     const dialogConfig = new MatDialogConfig();
