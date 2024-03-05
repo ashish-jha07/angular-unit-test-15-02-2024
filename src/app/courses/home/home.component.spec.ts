@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, tick, waitForAsync} from '@angular/core/testing';
 import {CoursesModule} from '../courses.module';
 import {DebugElement} from '@angular/core';
 
@@ -31,7 +31,7 @@ fdescribe('HomeComponent', () => {
 
   const beginnerCourses = setupCourses().filter(course => course.category === 'BEGINNER');
   const advancedCourses = setupCourses().filter(course => course.category === 'ADVANCED');
-
+  // waitForAsync
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports:[CoursesModule,NoopAnimationsModule,],
@@ -98,7 +98,7 @@ fdescribe('HomeComponent', () => {
 
 
 // with fakeasync
-  fit("should display advanced courses when the 'Advanced' tab is clicked  fakeasync" , fakeAsync(() => {
+  it("should display advanced courses when the 'Advanced' tab is clicked  fakeasync" , fakeAsync(() => {
     courseSpy.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css(".mdc-tab"));
@@ -106,6 +106,7 @@ fdescribe('HomeComponent', () => {
     fixture.detectChanges();
 
     flush() // empty task queue
+    // tick(15)
 
     const cardTitles = el.queryAll(By.css('.mat-mdc-tab-body-active .mat-mdc-card-title'));
     // console.log('Card Titles after click:', cardTitles.map((title) => title.nativeElement.textContent));
@@ -120,6 +121,33 @@ fdescribe('HomeComponent', () => {
   }));
 
 
+
+
+
+
+  fit("should display advanced courses when the 'Advanced' tab is clicked  async" , waitForAsync(() => {
+    courseSpy.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+    const tabs = el.queryAll(By.css(".mdc-tab"));
+    click(tabs[1]); // Assuming 'Advanced' tab is at index 1
+    fixture.detectChanges();
+
+    // flush() // empty task queue
+    // tick(15)
+     fixture.whenStable().then(()=>{
+      const cardTitles = el.queryAll(By.css('.mat-mdc-tab-body-active .mat-mdc-card-title'));
+      // console.log('Card Titles after click:', cardTitles.map((title) => title.nativeElement.textContent));
+      expect(cardTitles.length).toBeGreaterThan(0, "could not find card title");
+      expect(cardTitles[0].nativeElement.textContent).toContain("Angular Security Course - Web Security Fundamentals", "title not contain expected content");
+     })
+
+    // flush()
+    // flushMicrotasks()
+    // setTimeout(() => {
+
+    //   // done();
+    // }, 1000);
+  }));
 });
 
 
