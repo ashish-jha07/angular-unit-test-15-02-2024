@@ -16,7 +16,7 @@ import SpyObj = jasmine.SpyObj;
 
 
 
-describe('HomeComponent', () => {
+fdescribe('HomeComponent', () => {
   // let courseServiceSpy: SpyObj<CoursesService>; // Declare the spy here
   const courseSpy = jasmine.createSpyObj('CoursesService',['findAllCourses'])
 
@@ -94,6 +94,30 @@ describe('HomeComponent', () => {
     }, 1000);
   });
 
+
+
+
+// with fakeasync
+  fit("should display advanced courses when the 'Advanced' tab is clicked  fakeasync" , fakeAsync(() => {
+    courseSpy.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+    const tabs = el.queryAll(By.css(".mdc-tab"));
+    click(tabs[1]); // Assuming 'Advanced' tab is at index 1
+    fixture.detectChanges();
+
+    flush() // empty task queue
+
+    const cardTitles = el.queryAll(By.css('.mat-mdc-tab-body-active .mat-mdc-card-title'));
+    // console.log('Card Titles after click:', cardTitles.map((title) => title.nativeElement.textContent));
+    expect(cardTitles.length).toBeGreaterThan(0, "could not find card title");
+    expect(cardTitles[0].nativeElement.textContent).toContain("Angular Security Course - Web Security Fundamentals", "title not contain expected content");
+    // flush()
+    // flushMicrotasks()
+    // setTimeout(() => {
+
+    //   // done();
+    // }, 1000);
+  }));
 
 
 });

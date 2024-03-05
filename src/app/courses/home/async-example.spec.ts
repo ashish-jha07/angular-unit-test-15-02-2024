@@ -4,7 +4,7 @@ import { of } from "rxjs";
 import { delay } from "rxjs/operators";
 
 
-fdescribe('angular testing example',()=>{
+describe('angular testing example',()=>{
 
 
 
@@ -38,7 +38,7 @@ it('Async test example with Jasmin done()',(done : DoneFn)=>{
     // tick tick(500)
     //test
 
-flush()
+flush() // empty taks like setimout etc..
 
     expect(test).toBeTruthy()
   }))
@@ -95,7 +95,7 @@ Promise.resolve().then(()=>{
 
     });
     flush() //  2 timer(s) still in the queue. i won't flush settimout then it give error 2 task in quee
-    flushMicrotasks()
+    flushMicrotasks() // empty microtask
     console.log("Running test assertion")
     expect(test).toBeTruthy()
   }))
@@ -130,7 +130,7 @@ Promise.resolve().then(()=>{
   }))
 
 
-  fit('Asynchronous test example - Obserable', fakeAsync( ()=>{
+  it('Asynchronous test example - Obserable', fakeAsync( ()=>{
           let test = false ;
           // creating obserable
           console.log(" creating obserable ");
