@@ -32,7 +32,7 @@ fdescribe('HomeComponent', () => {
   const beginnerCourses = setupCourses().filter(course => course.category === 'BEGINNER');
   const advancedCourses = setupCourses().filter(course => course.category === 'ADVANCED');
   // waitForAsync
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports:[CoursesModule,NoopAnimationsModule,],
       providers:[{provide :CoursesService, useValue : courseSpy}]
